@@ -1,1 +1,2 @@
-Dwarf script to collect network requests and display on data panel
+Dwarf script to collect network requests and display on data panel. No need to unpin certificates as it hook straight low level functions.
+Additional, for android, okhttp request and response are hooked and displayed
