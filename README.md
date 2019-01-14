@@ -1,1 +1,1 @@
-Dwarf script for network requests
+Dwarf script to collect network requests and display on data panel
