@@ -1,6 +1,7 @@
 {
   "author": "iGio90",
   "name": "Dump Network Requests",
+  "description": "Dump network requests by hooking low and high level api",
   "android": true,
   "ios": true
 }
