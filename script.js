@@ -16,29 +16,27 @@ api.hookNative(api.findExport('SSL_write', 'libssl.so'), function(args) {
     return -1;
 });
 
-rcv_buf = null;
 api.hookNative(api.findExport('recv'), {
     onEnter: function (args) {
-        rcv_buf = args[1];
+        this.buf = args[1];
         // return -1 to prevent thread break
         return -1;
     },
     onLeave: function (ret) {
-        var what = Memory.readByteArray(rcv_buf, parseInt(ret));
+        var what = Memory.readByteArray(this.buf, parseInt(ret));
         // send data to ui (data panel)
         api.setData(Date.now() + ' recv', what);
     }
 
 });
 
-ssl_rcv_buf = null;
 api.hookNative(api.findExport('SSL_read'), {
     onEnter: function (args) {
-        ssl_rcv_buf = args[1];
+        this.buf = args[1];
         return -1;
     },
     onLeave: function (ret) {
-        var what = Memory.readByteArray(ssl_rcv_buf, parseInt(ret));
+        var what = Memory.readByteArray(this.buf, parseInt(ret));
         // send data to ui (data panel)
         api.setData(Date.now() + ' SSL_read', what);
     }
