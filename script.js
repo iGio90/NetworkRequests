@@ -30,7 +30,7 @@ api.hookNative(api.findExport('recv'), {
 
 });
 
-api.hookNative(api.findExport('SSL_read'), {
+api.hookNative(api.findExport('SSL_read', 'libssl.so'), {
     onEnter: function (args) {
         this.buf = args[1];
         return -1;
