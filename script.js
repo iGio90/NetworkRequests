@@ -1,44 +1,35 @@
-// api.hookNative is a shortcut of Interceptor attach
-// api.findExport is a shortcut of Module.findExportByName
-api.hookNative(api.findExport('send'), function(args) {
+//Dwarf >= 2.0.0 required
+addNativeHook(findExport('send'), function(args) {
     var what = Memory.readByteArray(args[1], parseInt(args[2]));
     // send data to ui (data panel)
-    api.setData(Date.now() + ' send', what);
-    // return -1 to prevent thread break
-    return -1;
+    showData('hex', 'send', what);
 });
 
-api.hookNative(api.findExport('SSL_write', 'libssl.so'), function(args) {
+addNativeHook(findExport('SSL_write', 'libssl.so'), function(args) {
     var what = Memory.readByteArray(args[1], parseInt(args[2]));
     // send data to ui (data panel)
-    api.setData(Date.now() + ' SSL_write', what);
-    // return -1 to prevent thread break
-    return -1;
+    showData('hex', 'SSL_write', what);
 });
 
-api.hookNative(api.findExport('recv'), {
+addNativeHook(findExport('recv'), {
     onEnter: function (args) {
         this.buf = args[1];
-        // return -1 to prevent thread break
-        return -1;
     },
     onLeave: function (ret) {
         var what = Memory.readByteArray(this.buf, parseInt(ret));
         // send data to ui (data panel)
-        api.setData(Date.now() + ' recv', what);
+        showData('hex', 'recv', what);
     }
-
 });
 
-api.hookNative(api.findExport('SSL_read', 'libssl.so'), {
+addNativeHook(findExport('SSL_read', 'libssl.so'), {
     onEnter: function (args) {
         this.buf = args[1];
-        return -1;
     },
     onLeave: function (ret) {
         var what = Memory.readByteArray(this.buf, parseInt(ret));
         // send data to ui (data panel)
-        api.setData(Date.now() + ' SSL_read', what);
+        showData('hex', 'SSL_read', what);
     }
 });
 
