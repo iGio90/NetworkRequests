@@ -1,4 +1,5 @@
 {
+  "dwarf": "2.0.0",
   "author": "iGio90",
   "name": "Dump Network Requests",
   "description": "Dump network requests by hooking low and high level api",
